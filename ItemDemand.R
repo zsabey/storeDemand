@@ -3,6 +3,7 @@ library(tidyverse)
 library(tidymodels)
 library(patchwork)
 
+
 #Read the data in
 trainCsv <- read_csv("train.csv")
 
@@ -27,12 +28,11 @@ for(s in 1:nStores){
     
     ## Save storeItem predictions
  
-       if(s==1 & i==1){
+      if(s==1 & i==1){
       all_preds <- preds
     } else {
       all_preds <- bind_rows(all_preds, preds)
     }
-    
   }
 }
 
