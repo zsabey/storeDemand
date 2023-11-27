@@ -58,14 +58,13 @@ select(date, sales) %>%
 full_join(., y=testCsv, by="date") %>%
 select(id, sales)
 
+#Plots the forecast
 
 plot4 <- es_fullfit %>%
   modeltime_forecast(h = "3 months", actual_data = storeItemTrain) %>%
   plot_modeltime_forecast(.interactive=FALSE, .legend_show = FALSE)
 
-plot3 
 
-plot4
 
-stopCluster(cl)
+#Combines the plots into graphs
 plotly:: subplot(plot1,plot2,plot3,plot4, nrows = 2)
