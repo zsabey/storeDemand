@@ -28,25 +28,29 @@ bake(prepped, new_data = NULL)
 
 
 ##CV
-my_mod <- rand_forest(mtry = tune(),
-                      min_n=tune(),
-                      trees=500) %>%
-  set_engine("ranger") %>%
-  set_mode("regression")
+boost_model <- boost_tree(tree_depth=tune(),
+                          trees=tune(),
+                          learn_rate=tune()) %>%
+  set_engine("lightgbm") %>% #or "xgboost" but lightgbm is faster
+  set_mode("classification")
 
 ## Create a workflow with model & recipe
-rf_workflow <- workflow() %>%
-  add_recipe(my_recipe) %>%
-  add_model(my_mod)
+boost_wf <- workflow() %>%
+  add_recipe(boost_recipe) %>%
+  add_model(boost_model)
+
+
+
+boost_tuneGrid <- grid_regular(tree_depth(),
+                               trees(),
+                               learn_rate(),
+                               levels=5)
   
   
   
   ## Set up grid of tuning values
   
-  #CV Results 1,23
-tuning_grid <- grid_regular(mtry(range=c(1,4)), 
-                            min_n(),
-                              levels = 5)## L^2 total tuning possibilities
+
 
 ## Set up K-fold CV
 folds <- vfold_cv(storeItemTrain, v = 3, repeats=1)
